@@ -3,6 +3,52 @@ var bishop1, bishop2, chess_king, chess_queen, chess_knight1, chess_knight2, che
 var chess_pawn1, chess_pawn2, chess_pawn3, chess_pawn4, chess_pawn5, chess_pawn6, chess_pawn7, chess_pawn8;
 var w_bishop1, w_bishop2, w_chess_king, w_chess_queen, w_chess_knight1, w_chess_knight2, w_chess_rook1, w_chess_rook2;
 var w_chess_pawn1, w_chess_pawn2, w_chess_pawn3, w_chess_pawn4, w_chess_pawn5, w_chess_pawn6, w_chess_pawn7, w_chess_pawn8;
+var blackKingPosition;
+function checkmate(){
+
+}
+function threatElement(b_i, b_j, king,chessArray2){
+	if(chessArray2[b_i][b_j].color !== king.color && validMove(b_i,b_j,king.row_pos, king.col_pos, chessArray2)){
+		// console.log("true");
+		return true;
+	}
+	else{
+		// console.log("false");
+		return false;
+	}
+}
+function kingInThreat(king,chessArray2){
+	// console.log(king);
+	let k_i = king.row_pos;
+	let k_j = king.col_pos;
+	console.log("------i : "+k_i+" j :"+k_j);
+	let max = chessArray.length;
+	let min = 0;
+	//check in top position
+	if(k_i != 0){
+		for(let i=k_i-1;i>=min;i--){
+			// console.log("i : "+i+" j :"+k_j);
+			if(positionBook(i,k_j)){
+				// console.log('ok');
+				// break;
+				// if(threatElement(i,k_j,king,chessArray2)){
+				// 	// console.log("King is in threat");
+				// }
+			}
+		}
+	}else{
+		// console.log("not checked");
+	}
+	//check in top-right position
+	//check in right postion
+	//check in right bottom
+	//check in bottom
+	//check in bottom left
+	//check in bottom left
+	//check in left
+	//check in top left
+}
+
 
 class Element{
 	constructor(name, type, color, row_pos, col_pos){
@@ -12,6 +58,23 @@ class Element{
 		this.row_pos = row_pos;
 		this.col_pos = col_pos;
 	}
+}
+function noOfAvailableElement(){
+	chessArray = JSON.parse(localStorage.getItem('chess-board'));
+	let b1 = 0;
+	let w1 = 0;
+	for(i of chessArray){
+		for(j of i){
+			if(j != "" && j.color === 'black'){
+				++b1;
+			}
+			else if(j != "" && j.color === 'white'){
+				++w1;
+			}
+		}
+	}
+	// console.log("Available Black element : "+ b1);
+	// console.log("Available White element : "+ w1);
 }
 function checkMovablePosition(elementType, x_pos, y_pos){
 	let movePositions = [];
@@ -72,7 +135,7 @@ function checkMovablePosition(elementType, x_pos, y_pos){
 		for(i of movePositions){
 			for(j of i){
 				++c;
-				console.log(j);
+				// console.log(j);
 			}
 		}
 		// console.log(c);
@@ -85,7 +148,6 @@ function positionBook(x_pos, y_pos){
 	else 
 		return true;
 }
-// chessArray = JSON.parse(localStorage.getItem('chess-board'));
 function checkRookPosition(p_i, p_j, n_i, n_j){
 	
 	if(p_j == n_j && p_i < n_i){
@@ -157,14 +219,21 @@ function checkRookPosition(p_i, p_j, n_i, n_j){
 	}
 }
 function checkKnightPosition(p_i, p_j, n_i, n_j){
-	if((p_i - 2 == n_i || p_i + 2 == n_i) && (p_j - 1 == n_j || p_j + 1 == n_j)){
+	if((p_i - 2 == n_i) && (p_j - 1 == n_j || p_j + 1 == n_j)){
 		return true;
 	}
-	else if((p_i - 1 == n_i || p_i + 1 == n_i) && (p_j - 2 == n_j || p_j + 2 == n_j)){
+	else if((p_i + 2 == n_i) && (p_j - 1 == n_j || p_j + 1 == n_j)){
 		return true;
 	}
-	else 
+	else if((p_i - 1 == n_i) && (p_j - 2 == n_j || p_j + 2 == n_j)){
+		return true;
+	}
+	else if((p_i + 1 == n_i) && (p_j - 2 == n_j || p_j + 2 == n_j)){
+		return true;
+	}
+	else{
 		return false;
+	}
 }
 function checkBishopPosition(p_i, p_j, n_i, n_j){
 	if(p_i > n_i  && p_j < n_j){
@@ -264,21 +333,19 @@ function checkQueenPosition(p_i, p_j, n_i, n_j){
 }
 function checkPawnPosition(p_i, p_j, n_i, n_j, color){
 	if(color == 'black'){
-		let p = p_i+1;
-		console.log(p);
-		// console.log(positionBook(p_i+1, p_j));
-		// if(!positionBook(p_i+1, p_j) && (p_i+1 == n_i && p_j == n_j)){
-		// 	return true;
-		// }
-		// else if((positionBook(p_i+1, p_j-1)) && (p_i+1 == n_i && p_j-1 == n_j)){
-		// 	return true;
-		// }
-		// else if((positionBook(p_i+1, p_j+1)) && (p_i+1 == n_i && p_j+1 == n_j)){
-		// 	return true;
-		// }
-		// else{
-		// 	return false;
-		// }
+		// console.log("Working "+(positionBook(p_i+1, p_j+1))+" "+ (p_i+1 == n_i && p_j+1 == n_j));
+		if(!positionBook(p_i+1, p_j) && (p_i+1 == n_i && p_j == n_j)){
+			return true;
+		}
+		else if((positionBook(p_i+1, p_j-1)) && (p_i+1 == n_i && p_j-1 == n_j)){
+			return true;
+		}
+		else if((positionBook(p_i+1, p_j+1)) && (p_i+1 == n_i && p_j+1 == n_j)){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 	else if(color == 'white'){
 		if(!positionBook(p_i-1, p_j) && (p_i-1 == n_i && p_j == n_j)){
@@ -298,8 +365,9 @@ function checkPawnPosition(p_i, p_j, n_i, n_j, color){
 		return false;
 	}
 }
-// console.log(checkPawnPosition(1,0,2,0,'black'));
+// console.log(checkQueenPosition(2,2,1,2));
 function restore(){
+	noOfStepsCount = 1;
 	let count = 0;
 	for(let i=0;i<8;i++){
 		chessArray[i] = [];
@@ -396,10 +464,13 @@ function restore(){
 	localArray = JSON.stringify(chessArray);
 	localStorage.setItem('chess-board', localArray);
 	chessArray = JSON.parse(localStorage.getItem('chess-board'));
+	// xconsole.log(whiteKingPosition);
 	addChessPieces(chessArray);
 }
+
 function createBoard(){
 	var chessArray = JSON.parse(localStorage.getItem('chess-board'));
+
 	addChessPieces(chessArray);
 }
 function iterator(arr){
@@ -456,6 +527,8 @@ function clear(){
 function updateInLocalStorage(p_i, p_j, n_i, n_j){
 	chessArray = JSON.parse(localStorage.getItem('chess-board'));
 	let img2 = chessArray[p_i][p_j];
+	img2.row_pos = n_i;
+	img2.col_pos = p_i;
 	chessArray[p_i][p_j] = "";
 	chessArray[n_i][n_j] = img2;
 	localArray = JSON.stringify(chessArray);
@@ -473,42 +546,132 @@ function dragOver(event){
 	event.preventDefault();
 	event.stopPropagation();
 }
-
-function drop(event){
-	chessArray = JSON.parse(localStorage.getItem('chess-board'));
-	event.preventDefault();
-	event.stopPropagation();
-	let p_i = dragBox.getAttribute('row');
-	let p_j = dragBox.getAttribute('col');
-	let n_i = event.target.getAttribute('row');
-	let n_j = event.target.getAttribute('col');
-	// console.log(chessArray[p_i][p_j].type);
+function checkOponent(p_i,p_j,n_i,n_j,chessArray2){
+	colorType1 = chessArray2[p_i][p_j].color;
+	colorType2 = chessArray2[n_i][n_j].color;
+	if(colorType1 === colorType2)
+		return false;
+	else
+		return true;
+}
+function validMove(p_i,p_j,n_i,n_j,chessArray2){
 	let check;
-	if(chessArray[p_i][p_j].type == 'bishop'){
-		check = checkBishopPosition(p_i, p_j, n_i, n_j);
-	}
-	else if(chessArray[p_i][p_j].type == 'chess_knight'){
-		check = checkKnightPosition(p_i, p_j, n_i, n_j);
-	}
-	else if(chessArray[p_i][p_j].type == 'chess_rook'){
-		check = checkRookPosition(p_i, p_j, n_i, n_j);
-	}
-	else if(chessArray[p_i][p_j].type == 'chess_king'){
-		check = checkKingPosition(p_i, p_j, n_i, n_j);
-	}
-	else if(chessArray[p_i][p_j].type == 'chess_queen'){
-		check = checkQueenPosition(p_i, p_j, n_i, n_j);	
-	}
-	else if(chessArray[p_i][p_j].type == 'chess_pawn'){
-		check = checkPawnPosition(p_i, p_j, n_i, n_j, chessArray[p_i][p_j].color);	
+	if(checkOponent(p_i,p_j,n_i,n_j,chessArray2)){
+		if(chessArray2[p_i][p_j].type == 'bishop'){
+			// console.log("bishop is moving");
+			check = checkBishopPosition(p_i, p_j, n_i, n_j);
+			// console.log(check);
+		}
+		else if(chessArray2[p_i][p_j].type == 'chess_knight'){
+			// console.log("Knight is moving");
+			check = checkKnightPosition(p_i, p_j, n_i, n_j);
+			// console.log(check);
+		}
+		else if(chessArray2[p_i][p_j].type == 'chess_rook'){
+			// console.log("rook is moving");
+			check = checkRookPosition(p_i, p_j, n_i, n_j);
+			// console.log(check);
+		}
+		else if(chessArray2[p_i][p_j].type == 'chess_king'){
+			// console.log("king is moving");
+			check = checkKingPosition(p_i, p_j, n_i, n_j);
+			// console.log(check);
+		}
+		else if(chessArray2[p_i][p_j].type == 'chess_queen'){
+			// console.log("Queen is moving");
+			check = checkQueenPosition(p_i, p_j, n_i, n_j);	
+			// console.log(check);
+		}
+		else if(chessArray2[p_i][p_j].type == 'chess_pawn'){
+			// console.log("Pawn is moving");
+			check = checkPawnPosition(p_i, p_j, n_i, n_j, chessArray[p_i][p_j].color);	
+			// console.log(check);
+		}
+		else{
+			// console.log("else part is running");
+			check = false;
+		}
 	}
 	else{
+		// console.log("Same color cannot move");
 		check = false;
 	}
-	// console.log("i "+p_i +" j "+p_j);
-	// console.log("i "+n_i +" j "+n_j);
-	if(check == true){
+	return check;
+}
+function countSteps(count, dragElement){
+	// console.log(dragElement);
+	if(count <=4){
+		if((count == 1 || count == 2) && dragElement == 'white'){
+			console.log("white element is drag");
+			return true;
+		}
+		else if((count == 3 || count == 4) && dragElement == 'black'){
+			console.log("black element is drag");
+			return true;
+		}
+		else{
+			console.log("wrong move");
+			return false;
+		}
+	}
+	else{
+		if((count % 2 == 1) && (dragElement == 'white')){
+			console.log("Odd move and white element");
+			return true;
+		}
+		else if((count % 2 == 0) && (dragElement == 'black')){
+			console.log("Even move and black element");
+			return true;
+		}
+		else{
+			console.log("after 4th step wrong move");
+			return false;
+		}
+	}
+}
+function kingCurrentPosition(k_color, chessArray2){
+	for(let i=0;i<chessArray2.length;i++){
+		for(let j=0;j<chessArray2[i].length;j++){
+			if(chessArray2[i][j].type == 'chess_king' && chessArray2[i][j].color == k_color){
+				return chessArray2[i][j];
+			}	
+		}
+	}
+}
+var noOfStepsCount;
+function drop(event){
+	event.preventDefault();
+	event.stopPropagation();
+	chessArray = JSON.parse(localStorage.getItem('chess-board'));
+	let p_i = parseInt(dragBox.getAttribute('row'));
+	let p_j = parseInt(dragBox.getAttribute('col'));
+	let n_i;
+	let n_j;
+	if(event.target.tagName == 'IMG'){
+		n_i = parseInt(event.target.parentNode.getAttribute('row'));
+		n_j = parseInt(event.target.parentNode.getAttribute('col'));
+	}
+	else{
+		n_i = parseInt(event.target.getAttribute('row'));
+		n_j = parseInt(event.target.getAttribute('col'));	
+	}
+	let check = validMove(p_i,p_j,n_i,n_j,chessArray);
+	let validStep = true;
+	if(check && validStep){
 		updateInLocalStorage(p_i,p_j,n_i,n_j);
+		chessArray = JSON.parse(localStorage.getItem('chess-board'));
+		let king1 = kingCurrentPosition('black', chessArray);
+		// let king2 = kingCurrentPosition('white', chessArray);
+		//console.log(kingCurrentPosition('black', chessArray));
+		// noOfAvailableElement();
+		// console.log("No of steps "+noOfStepsCount);
+		// ++noOfStepsCount;
+		//king is in threat postion or not
+		// console.log(whiteKingPosition);
+		// kingInThreat(whiteKingPosition,chessArray);
+		console.log(king1);
+		 // kingInThreat(king1,chessArray);
+		// kingInThreat(king2,chessArray);
 	}
 }
 
