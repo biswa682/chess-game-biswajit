@@ -629,12 +629,15 @@ function countSteps(count, dragElement){
 		}
 	}
 }
+chessArray2 = JSON.parse(localStorage.getItem('chess-board'));
 function kingCurrentPosition(k_color, chessArray2){
+	var counter;
+	console.log(chessArray2);
 	for(let i=0;i<chessArray2.length;i++){
 		for(let j=0;j<chessArray2[i].length;j++){
-			if(chessArray2[i][j].type == 'chess_king' && chessArray2[i][j].color == k_color){
-				return chessArray2[i][j];
-			}	
+			console.log(chessArray2[i][j]);
+			counter++;
+			console.log(counter);
 		}
 	}
 }
@@ -669,7 +672,7 @@ function drop(event){
 		//king is in threat postion or not
 		// console.log(whiteKingPosition);
 		// kingInThreat(whiteKingPosition,chessArray);
-		console.log(king1);
+		// console.log(king1);
 		 // kingInThreat(king1,chessArray);
 		// kingInThreat(king2,chessArray);
 	}
@@ -681,3 +684,37 @@ document.getElementById('main-chess-board').addEventListener("dragover", dragOve
 document.getElementById('main-chess-board').addEventListener("drop", drop);
 document.getElementById('reset-btn').addEventListener("click", restore);
 document.getElementById('clear-btn').addEventListener("click", clear);
+
+
+// let a1 = false,a2 = false,a3 = false,a4 = false,a5 = false,a6 = false,a7 = false,a8 = false;
+	// // if(k_j-1>=0)
+	// 	a1 = kingInThreat(king,k_i, k_j-1,chessArray2);
+	// 	console.log("check in left "+a1);
+	// // if(k_j+1<8)
+	// 	a2 = kingInThreat(king,k_i, k_j+1,chessArray2);
+	// 	console.log("check in right "+a2);
+	// // if(k_i+1<8)
+	// 	a3 = kingInThreat(king,k_i+1, k_j,chessArray2);
+	// 	console.log("check in bottom "+a3);
+	// // if(k_i+1 <8 && k_j+1<8)
+	// 	a4 = kingInThreat(king,k_i+1, k_j+1,chessArray2);
+	// 	console.log("check in right-bottom "+a4);
+	// // if(k_i+1 <8 && k_j-1 >=0)
+	// 	a5 = kingInThreat(king,k_i+1, k_j-1,chessArray2);
+	// 	console.log("check in bottom-left "+a5);
+	// // if(k_i-1>=0)
+	// 	a6 = kingInThreat(king,k_i-1, k_j,chessArray2);
+	// 	 console.log("check in top "+a6);
+	// // if(k_i-1>=0 && k_j-1>=0)
+	// 	a7 = kingInThreat(king,k_i-1, k_j-1,chessArray2);
+	// 	console.log("check in top-left "+a7);
+	// // if(k_i-1>=0 && k_j+1<8)
+	// 	a8 = kingInThreat(king,k_i-1, k_j+1,chessArray2);
+	// 	console.log("check in top-right "+a8);		
+		
+	// if(a1 || a2 || a3 || a4 || a5 || a6 || a7 || a8){
+	// 	console.log("Next move is in threat");
+	// 	return true;
+	// }
+	// else
+	// 	return false;
