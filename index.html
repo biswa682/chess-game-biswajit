@@ -7,12 +7,21 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body onload = "createBoard()">
-	<button id="reset-btn" class="reset-btn btn">Reset</button>
+<body>
+	<div class="left-showcase">
+		<button id="reset-btn" class="reset-btn btn">Reset</button>
+		<p class="colorOfMovingPiece" id="colorOfMovingPiece">fadsf</p>
+		<p class="w-checkmate" id="w-checkmate">White king is in Check</p>
+	</div>
 	<div class="main-chess-board" id="main-chess-board"></div>
-	<button id="clear-btn" class="clear-btn btn">Clear</button>	
+	<div class="right-showcase">
+		<button id="clear-btn" class="clear-btn btn">Clear</button>
+		<p class="noOfMoves" id="noOfMoves"></p>
+		<p class="b-checkmate" id="b-checkmate">Black king is in Check</p>
+	</div>
 </body>
-<script type="text/javascript" src="chess4.js"></script>
+<script type="text/javascript" src="chess5.js"></script>
 </html>
 <!-- onload = "createBoard()" -->
 <!-- onload = "restore()" -->
+ <!-- onload = "createBoard()" -->
